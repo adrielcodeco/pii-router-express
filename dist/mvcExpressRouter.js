@@ -66,7 +66,7 @@ class MVCExpressRouter extends server_express_1.ExpressRouter {
           const isController =
             (typeof controller === 'object' ||
               typeof controller === 'function') &&
-            !!(controller.prototype || {}).constructor &&
+            !!controller.prototype.constructor &&
             Reflect.hasMetadata(metadata_1.Metadata.controller_name, controller)
           if (isController) {
             const meta = metadata_1.Metadata.get(controller)

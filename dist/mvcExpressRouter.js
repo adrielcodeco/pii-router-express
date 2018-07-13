@@ -45,6 +45,7 @@ class MVCExpressRouter extends server_express_1.ExpressRouter {
     this.router.use(this.requestHandler)
   }
   resolveController (file) {
+    if (!file) throw new Error('invalid file')
     const filePath = path.isAbsolute(file)
       ? file
       : path.resolve(process.cwd(), file)

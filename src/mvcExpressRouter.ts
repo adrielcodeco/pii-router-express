@@ -25,6 +25,7 @@ export class MVCExpressRouter extends ExpressRouter {
   }
 
   public resolveController (file: string) {
+    if (!file) throw new Error('invalid file')
     const filePath = path.isAbsolute(file)
       ? file
       : path.resolve(process.cwd(), file)

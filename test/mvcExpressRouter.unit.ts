@@ -32,8 +32,8 @@ test('call resolveController without arguments', () => {
   const unit = requireTest()
   let router = new unit.MVCExpressRouter()
   expect(() => {
-    router.resolveController('')
-  }).not.toThrow()
+    router.resolveController()
+  }).toThrowError(/invalid file/)
 })
 
 test('call resolveController with absolute file', () => {
@@ -43,6 +43,16 @@ test('call resolveController with absolute file', () => {
   expect(() => {
     router.resolveController(require.resolve('./dummy/classController'))
     router.resolveController(require.resolve('./dummy/defaultClassController'))
+  }).not.toThrow()
+})
+
+test('call resolveController with relative file', () => {
+  expect.assertions(1)
+  const unit = requireTest()
+  let router = new unit.MVCExpressRouter()
+  expect(() => {
+    router.resolveController('test/dummy/classController')
+    router.resolveController('test/dummy/defaultClassController')
   }).not.toThrow()
 })
 

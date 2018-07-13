@@ -1,6 +1,6 @@
 {
   "name": "@pii/router-express",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Express Router implementation for Pii Epxress Server",
   "main": "dist/index.js",
   "engines": {

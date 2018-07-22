@@ -7,14 +7,16 @@
 import 'reflect-metadata'
 import * as express from 'express'
 import * as path from 'path'
+import * as fs from 'fs'
+import * as glob from 'glob'
+import { ControllerToken } from '@pii/application'
 import { ExpressRouter } from '@pii/server-express'
-import { Container, Token } from '@pii/di'
+import { Container } from '@pii/di'
 import { Metadata } from './metadata/metadata'
+import { MetadataKeys } from './metadata/metadataKeys'
 import { ControllerMetadata } from './metadata/controllerMetadata'
 
-export const ControllerToken = Token('EXPRESS_CONTROLLER_TOKEN')
-
-export class MVCExpressRouter extends ExpressRouter {
+export class RESTExpressRouter extends ExpressRouter {
   private controllers: any[] = []
   private router: express.Router
 
@@ -22,6 +24,37 @@ export class MVCExpressRouter extends ExpressRouter {
     super()
     this.router = express.Router()
     this.router.use(this.requestHandler)
+  }
+
+  public add (controllerModule: any) {
+    if (!controllerModule) throw new Error('invalid controller')
+    const isController =
+      (typeof controllerModule === 'object' ||
+        typeof controllerModule === 'function') &&
+      !!(controllerModule.prototype || {}).constructor &&
+      Reflect.hasMetadata(MetadataKeys.controller_name, controllerModule)
+    if (isController) {
+      const meta = Metadata.get(controllerModule)
+      Container.addTransient(ControllerToken, meta)
+    } else {
+      try {
+        const controllers = Reflect.ownKeys(controllerModule)
+        controllers.forEach(key => {
+          const controller = controllerModule[key]
+          const isController =
+            (typeof controller === 'object' ||
+              typeof controller === 'function') &&
+            !!controller.prototype.constructor &&
+            Reflect.hasMetadata(MetadataKeys.controller_name, controller)
+          if (isController) {
+            const meta = Metadata.get(controller)
+            Container.addTransient(ControllerToken, meta)
+          }
+        })
+      } catch (err) {
+        // does nothing
+      }
+    }
   }
 
   public resolveController (file: string) {
@@ -34,11 +67,11 @@ export class MVCExpressRouter extends ExpressRouter {
       (typeof controllerModule === 'object' ||
         typeof controllerModule === 'function') &&
       !!(controllerModule.prototype || {}).constructor &&
-      Reflect.hasMetadata(Metadata.controller_name, controllerModule)
+      Reflect.hasMetadata(MetadataKeys.controller_name, controllerModule)
     if (isController) {
       const meta = Metadata.get(controllerModule)
       meta.resolveWith(filePath)
-      Container.addSingleton(ControllerToken, meta)
+      Container.addTransient(ControllerToken, meta)
     } else {
       try {
         const controllers = Reflect.ownKeys(controllerModule)
@@ -48,17 +81,28 @@ export class MVCExpressRouter extends ExpressRouter {
             (typeof controller === 'object' ||
               typeof controller === 'function') &&
             !!controller.prototype.constructor &&
-            Reflect.hasMetadata(Metadata.controller_name, controller)
+            Reflect.hasMetadata(MetadataKeys.controller_name, controller)
           if (isController) {
             const meta = Metadata.get(controller)
             meta.resolveWith(filePath)
-            Container.addSingleton(ControllerToken, meta)
+            Container.addTransient(ControllerToken, meta)
           }
         })
       } catch (err) {
         // does nothing
       }
     }
+  }
+
+  public resolveControllers (directory: string) {
+    if (!directory || !fs.lstatSync(directory).isDirectory()) {
+      throw new Error('invalid directory')
+    }
+    const files = glob.sync('**/*.[tj]s', { cwd: directory })
+    files.forEach(file => {
+      const filePath = path.resolve(directory, file)
+      this.resolveController(filePath)
+    })
   }
 
   public async init (server: express.Express): Promise<void> {

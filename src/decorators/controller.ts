@@ -5,12 +5,40 @@
  * LICENSE file in the root directory of this source tree.
  */
 import 'reflect-metadata'
-import { Metadata } from '../metadata'
+import { Container } from '@pii/di'
+import { ControllerToken } from '@pii/application'
+import { Metadata, MetadataKeys } from '../metadata'
 
-export function Controller (path?: string, name?: string) {
+export type ControllerDecorationOptions = {
+  name?: string
+  inject?: boolean
+  scoped?: string
+}
+
+export function Controller (
+  path?: string,
+  options?: string | ControllerDecorationOptions
+): Function {
+  let name: string
+  if (typeof options === 'string') {
+    name = options
+  } else {
+    name = (options || ({} as any)).name
+  }
   return function (target: any) {
-    if (!name) name = target.name
-    Reflect.defineMetadata(Metadata.controller_name, name, target)
-    Reflect.defineMetadata(Metadata.controller_path, path || '/', target)
+    if (!name) {
+      name = target.name
+    }
+    Reflect.defineMetadata(MetadataKeys.controller_name, name, target)
+    Reflect.defineMetadata(MetadataKeys.controller_path, path || '/', target)
+    if (typeof options === 'object') {
+      if (options.inject) {
+        const meta = Metadata.get(target)
+        if (options.scoped) {
+          meta.resolveWith(options.scoped)
+        }
+        Container.addTransient(ControllerToken, meta)
+      }
+    }
   }
 }

@@ -6,6 +6,7 @@ export declare class ActionMetadata {
     action: string;
     method: Methods;
     params: ActionParamMetadata[];
+    render?: string;
     constructor(key: string, route: string, action: string, method: Methods);
 }
 //# sourceMappingURL=actionMetadata.d.ts.map

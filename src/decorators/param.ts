@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import 'reflect-metadata'
-import { Metadata } from '../metadata'
+import { MetadataKeys } from '../metadata'
 import { ActionMetadata } from '../metadata/actionMetadata'
 import { ActionParamMetadata } from '../metadata/actionParamMetadata'
 import functionArgs from '../functionArgs'
@@ -14,7 +14,7 @@ export function Param (name?: string) {
   return function (target: any, propertyName: string, index: number) {
     const key = propertyName
     const actions: ActionMetadata[] =
-      Reflect.getMetadata(Metadata.controller_actions, target.constructor) || []
+      Reflect.getMetadata(MetadataKeys.controller_actions, target.constructor) || []
     let action = actions.find(a => a.key === key)
     if (!action) {
       action = new ActionMetadata(key, '', '', 'get')
@@ -36,7 +36,7 @@ export function Param (name?: string) {
       )
     )
     Reflect.defineMetadata(
-      Metadata.controller_actions,
+      MetadataKeys.controller_actions,
       actions,
       target.constructor
     )

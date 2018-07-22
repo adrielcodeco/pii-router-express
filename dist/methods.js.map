@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/methods.ts"],"names":[],"mappings":"","file":"methods.js","sourcesContent":["/**\n * Copyright 2018-present, CODECO. All rights reserved.\n *\n * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.\n */\nexport type Methods = 'get' | 'put' | 'post' | 'delete'\n"]}
+{"version":3,"sources":["../src/methods.ts"],"names":[],"mappings":"","file":"methods.js"}

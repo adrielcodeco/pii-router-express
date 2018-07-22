@@ -6,7 +6,7 @@
  */
 import 'reflect-metadata'
 import * as express from 'express'
-import { Metadata } from './metadata'
+import { MetadataKeys } from './metadataKeys'
 import { ActionMetadata } from './actionMetadata'
 import { ControllerResolver } from '../controllerResolver'
 import scope from '@pii/scope'
@@ -21,7 +21,7 @@ export class ControllerMetadata {
       throw new Error('Controller cannot be undefined')
     }
     this.controller = controller
-    this.path = Reflect.getMetadata(Metadata.controller_path, this.controller)
+    this.path = Reflect.getMetadata(MetadataKeys.controller_path, this.controller)
   }
 
   public resolveWith (file: string) {
@@ -43,7 +43,7 @@ export class ControllerMetadata {
 
   private getActions (): ActionMetadata[] {
     return (
-      Reflect.getMetadata(Metadata.controller_actions, this.controller) || []
+      Reflect.getMetadata(MetadataKeys.controller_actions, this.controller) || []
     )
   }
 
@@ -75,7 +75,11 @@ export class ControllerMetadata {
       }
       const ctrl = new Controller()
       const result = ctrl[action.action].apply(ctrl, [])
-      res.json(result)
+      if (action.render) {
+        res.render(action.render, result)
+      } else {
+        res.json(result)
+      }
     }
   }
 }

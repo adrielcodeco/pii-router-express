@@ -9,6 +9,7 @@ import { ActionParamMetadata } from './actionParamMetadata'
 
 export class ActionMetadata {
   public params: ActionParamMetadata[] = []
+  public render?: string
   constructor (
     public key: string,
     public route: string,

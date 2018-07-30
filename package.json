@@ -36,8 +36,10 @@
   "dependencies": {
     "@pii/application": "file:../pii-application",
     "@pii/di": "file:../pii-di",
+    "@pii/moduleloader": "file:../pii-moduleLoader",
     "@pii/scope": "file:../pii-scope",
     "@pii/server-express": "file:../pii-server-express",
+    "@pii/utils": "file:../pii-utils",
     "express": "^4.16.3",
     "glob": "github:adrielcodeco/node-glob",
     "winston": "^3.0.0"

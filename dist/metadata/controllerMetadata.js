@@ -4,6 +4,7 @@ require("reflect-metadata");
 const express = require("express");
 const metadataKeys_1 = require("./metadataKeys");
 const controllerResolver_1 = require("../controllerResolver");
+const responseFormatter_1 = require("../responseFormatter");
 const scope_1 = require("@pii/scope");
 class ControllerMetadata {
     constructor(controller) {
@@ -29,7 +30,8 @@ class ControllerMetadata {
         });
     }
     getActions() {
-        return (Reflect.getMetadata(metadataKeys_1.MetadataKeys.controller_actions, this.controller) || []);
+        return (Reflect.getMetadata(metadataKeys_1.MetadataKeys.controller_actions, this.controller) ||
+            []);
     }
     requestHandler(action) {
         return (req, res, next) => {
@@ -55,14 +57,46 @@ class ControllerMetadata {
                 }
             }
             const ctrl = new Controller();
-            const result = ctrl[action.action].apply(ctrl, []);
-            if (action.render) {
-                res.render(action.render, result);
-            }
-            else {
-                res.json(result);
-            }
+            const params = this.resolveParams(action, req);
+            const actionResult = ctrl[action.action].apply(ctrl, params);
+            Promise.resolve(actionResult)
+                .then((result) => {
+                if (action.render) {
+                    res.render(action.render, responseFormatter_1.formatResponse(req.formatters, req, result));
+                }
+                else {
+                    res.json(responseFormatter_1.formatResponse(req.formatters, req, result));
+                }
+            })
+                .catch((err) => {
+                if (action.render) {
+                    next(responseFormatter_1.formatResponse(req.formatters, req, null, err));
+                }
+                else {
+                    res.json(responseFormatter_1.formatResponse(req.formatters, req, null, err));
+                }
+            });
         };
+    }
+    resolveParams(action, req) {
+        let paramsLength = 0;
+        action.params.forEach(param => {
+            if (param.index >= paramsLength) {
+                paramsLength = param.index + 1;
+            }
+        });
+        const params = new Array(paramsLength);
+        action.params.forEach(paramMetadata => {
+            let param;
+            if (req.body && req.body[paramMetadata.name]) {
+                param = req.body[paramMetadata.name];
+            }
+            else if (req.query && req.query[paramMetadata.name]) {
+                param = req.query[paramMetadata.name];
+            }
+            params[paramMetadata.index] = param;
+        });
+        return params;
     }
 }
 exports.ControllerMetadata = ControllerMetadata;

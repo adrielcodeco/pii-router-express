@@ -8,13 +8,16 @@ import 'reflect-metadata'
 import { MetadataKeys } from '../metadata'
 import { ActionMetadata } from '../metadata/actionMetadata'
 import { ActionParamMetadata } from '../metadata/actionParamMetadata'
-import functionArgs from '../functionArgs'
+import { functionArgs } from '@pii/utils'
 
-export function Param (name?: string) {
+export function Param (name?: string, acceptHeader: boolean = false) {
   return function (target: any, propertyName: string, index: number) {
     const key = propertyName
     const actions: ActionMetadata[] =
-      Reflect.getMetadata(MetadataKeys.controller_actions, target.constructor) || []
+      Reflect.getMetadata(
+        MetadataKeys.controller_actions,
+        target.constructor
+      ) || []
     let action = actions.find(a => a.key === key)
     if (!action) {
       action = new ActionMetadata(key, '', '', 'get')
@@ -32,7 +35,8 @@ export function Param (name?: string) {
         name || propertyName,
         paramName,
         paramTypeName,
-        index
+        index,
+        acceptHeader
       )
     )
     Reflect.defineMetadata(

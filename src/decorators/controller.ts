@@ -6,7 +6,7 @@
  */
 import 'reflect-metadata'
 import { Container } from '@pii/di'
-import { ControllerToken } from '@pii/application'
+import { ControllerToken } from '../controllerToken'
 import { Metadata, MetadataKeys } from '../metadata'
 
 export type ControllerDecorationOptions = {

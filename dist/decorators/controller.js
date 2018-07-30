@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const di_1 = require("@pii/di");
-const application_1 = require("@pii/application");
+const controllerToken_1 = require("../controllerToken");
 const metadata_1 = require("../metadata");
 function Controller(path, options) {
     let name;
@@ -24,7 +24,7 @@ function Controller(path, options) {
                 if (options.scoped) {
                     meta.resolveWith(options.scoped);
                 }
-                di_1.Container.addTransient(application_1.ControllerToken, meta);
+                di_1.Container.addTransient(controllerToken_1.ControllerToken, meta);
             }
         }
     };

@@ -140,7 +140,7 @@ class AbstractExpressRouter extends server_express_1.ExpressRouter {
         });
     }
     requestHandler(req, res, next) {
-        Reflect.set(req, 'formatters', this.responseFormatters);
+        req && Reflect.set(req, 'formatters', this.responseFormatters);
         next && next();
     }
 }

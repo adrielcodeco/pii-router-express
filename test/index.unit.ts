@@ -11,16 +11,18 @@ const requireTest = () => {
 }
 
 test('require', () => {
-  expect.assertions(10)
+  expect.assertions(12)
   const unit = requireTest()
   expect(unit).toHaveProperty('Controller')
+  expect(unit).toHaveProperty('ControllerResolver')
   expect(unit).toHaveProperty('Delete')
   expect(unit).toHaveProperty('Get')
   expect(unit).toHaveProperty('Param')
   expect(unit).toHaveProperty('Post')
   expect(unit).toHaveProperty('Put')
-  expect(unit).toHaveProperty('ControllerResolver')
-  expect(unit).toHaveProperty('ControllerToken')
-  expect(unit).toHaveProperty('MVCExpressRouter')
-  expect(Object.keys(unit).length).toEqual(9)
+  expect(unit).toHaveProperty('RESTExpressRouter')
+  expect(unit).toHaveProperty('ViewExpressRouter')
+  expect(unit).toHaveProperty('defaultRestRouterFrom')
+  expect(unit).toHaveProperty('defaultViewRouterFrom')
+  expect(Object.keys(unit).length).toEqual(11)
 })

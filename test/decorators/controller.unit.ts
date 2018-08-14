@@ -22,23 +22,23 @@ test('require', () => {
 test('use Controller without arguments', () => {
   expect.assertions(2)
   const Controller = requireTest().Controller
-  const { Metadata } = require('../../src/metadata')
+  const { MetadataKeys } = require('../../src/metadata')
   @Controller()
   class Test {}
-  const metaName = Reflect.getMetadata(Metadata.controller_name, Test)
+  const metaName = Reflect.getMetadata(MetadataKeys.controller_name, Test)
   expect(metaName).toEqual('Test')
-  const metaPath = Reflect.getMetadata(Metadata.controller_path, Test)
+  const metaPath = Reflect.getMetadata(MetadataKeys.controller_path, Test)
   expect(metaPath).toEqual('/')
 })
 
 test('use Controller', () => {
   expect.assertions(2)
   const Controller = requireTest().Controller
-  const { Metadata } = require('../../src/metadata')
+  const { MetadataKeys } = require('../../src/metadata')
   @Controller('/path-test', 'name-test')
   class Test {}
-  const metaName = Reflect.getMetadata(Metadata.controller_name, Test)
+  const metaName = Reflect.getMetadata(MetadataKeys.controller_name, Test)
   expect(metaName).toEqual('name-test')
-  const metaPath = Reflect.getMetadata(Metadata.controller_path, Test)
+  const metaPath = Reflect.getMetadata(MetadataKeys.controller_path, Test)
   expect(metaPath).toEqual('/path-test')
 })

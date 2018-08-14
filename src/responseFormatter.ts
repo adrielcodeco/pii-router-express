@@ -16,7 +16,7 @@ export function formatResponse (
   result: any,
   error?: any
 ): any {
-  formatters.forEach(formatter => {
+  (formatters || []).forEach(formatter => {
     if (!isFunction(formatter)) {
       throw new Error(
         `invalid formatter ${(formatter as any).name ||

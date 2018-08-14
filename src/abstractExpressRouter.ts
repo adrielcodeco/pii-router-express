@@ -148,7 +148,7 @@ export abstract class AbstractExpressRouter extends ExpressRouter {
     res: express.Response,
     next: express.NextFunction
   ) {
-    Reflect.set(req, 'formatters', this.responseFormatters)
+    req && Reflect.set(req, 'formatters', this.responseFormatters)
     next && next()
   }
 }

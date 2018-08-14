@@ -59,7 +59,7 @@ class ControllerMetadata {
             const ctrl = new Controller();
             const params = this.resolveParams(action, req);
             const actionResult = ctrl[action.action].apply(ctrl, params);
-            Promise.resolve(actionResult)
+            return Promise.resolve(actionResult)
                 .then((result) => {
                 if (action.render) {
                     res.render(action.render, responseFormatter_1.formatResponse(req.formatters, req, result));
@@ -80,13 +80,14 @@ class ControllerMetadata {
     }
     resolveParams(action, req) {
         let paramsLength = 0;
-        action.params.forEach(param => {
+        const actionParams = action.params || [];
+        actionParams.forEach(param => {
             if (param.index >= paramsLength) {
                 paramsLength = param.index + 1;
             }
         });
         const params = new Array(paramsLength);
-        action.params.forEach(paramMetadata => {
+        actionParams.forEach(paramMetadata => {
             let param;
             if (req.body && req.body[paramMetadata.name]) {
                 param = req.body[paramMetadata.name];

@@ -17,7 +17,7 @@ test('require', () => {
   expect(Object.keys(unit).length).toEqual(1)
 })
 
-test('check properties', () => {
+test.skip('check properties', () => {
   expect.assertions(3)
   const unit = requireTest()
   expect(unit.Metadata.controller_path).toEqual(

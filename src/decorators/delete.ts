@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Metadata } from '../metadata'
+import { MetadataKeys } from '../metadata'
 import { ActionMetadata } from '../metadata/actionMetadata'
 
 export function Delete (path?: string, name?: string) {
@@ -16,7 +16,7 @@ export function Delete (path?: string, name?: string) {
     const method = 'delete'
     const key = propertyName
     const actions: ActionMetadata[] =
-      Reflect.getMetadata(Metadata.controller_actions, target.constructor) || []
+      Reflect.getMetadata(MetadataKeys.controller_actions, target.constructor) || []
     let action = actions.find(a => a.key === key)
     if (action) {
       action.action = name || propertyName
@@ -32,7 +32,7 @@ export function Delete (path?: string, name?: string) {
       actions.push(action)
     }
     Reflect.defineMetadata(
-      Metadata.controller_actions,
+      MetadataKeys.controller_actions,
       actions,
       target.constructor
     )

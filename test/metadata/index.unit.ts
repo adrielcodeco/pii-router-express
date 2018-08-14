@@ -11,8 +11,9 @@ const requireTest = () => {
 }
 
 test('require', () => {
-  expect.assertions(2)
+  expect.assertions(3)
   const unit = requireTest()
   expect(unit).toHaveProperty('Metadata')
-  expect(Object.keys(unit).length).toEqual(1)
+  expect(unit).toHaveProperty('MetadataKeys')
+  expect(Object.keys(unit).length).toEqual(2)
 })

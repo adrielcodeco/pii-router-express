@@ -6,9 +6,10 @@
  */
 import 'reflect-metadata'
 import * as express from 'express'
-import { Metadata } from './metadata'
+import { MetadataKeys } from './metadataKeys'
 import { ActionMetadata } from './actionMetadata'
 import { ControllerResolver } from '../controllerResolver'
+import { formatResponse } from '../responseFormatter'
 import scope from '@pii/scope'
 
 export class ControllerMetadata {
@@ -21,7 +22,10 @@ export class ControllerMetadata {
       throw new Error('Controller cannot be undefined')
     }
     this.controller = controller
-    this.path = Reflect.getMetadata(Metadata.controller_path, this.controller)
+    this.path = Reflect.getMetadata(
+      MetadataKeys.controller_path,
+      this.controller
+    )
   }
 
   public resolveWith (file: string) {
@@ -43,7 +47,8 @@ export class ControllerMetadata {
 
   private getActions (): ActionMetadata[] {
     return (
-      Reflect.getMetadata(Metadata.controller_actions, this.controller) || []
+      Reflect.getMetadata(MetadataKeys.controller_actions, this.controller) ||
+      []
     )
   }
 
@@ -74,8 +79,47 @@ export class ControllerMetadata {
         }
       }
       const ctrl = new Controller()
-      const result = ctrl[action.action].apply(ctrl, [])
-      res.json(result)
+      const params = this.resolveParams(action, req)
+      const actionResult = ctrl[action.action].apply(ctrl, params)
+      return Promise.resolve(actionResult)
+        .then((result: any) => {
+          if (action.render) {
+            res.render(
+              action.render,
+              formatResponse((req as any).formatters, req, result)
+            )
+          } else {
+            res.json(formatResponse((req as any).formatters, req, result))
+          }
+        })
+        .catch((err: any) => {
+          if (action.render) {
+            next(formatResponse((req as any).formatters, req, null, err))
+          } else {
+            res.json(formatResponse((req as any).formatters, req, null, err))
+          }
+        })
     }
+  }
+
+  private resolveParams (action: ActionMetadata, req: express.Request): any[] {
+    let paramsLength = 0
+    const actionParams = action.params || []
+    actionParams.forEach(param => {
+      if (param.index >= paramsLength) {
+        paramsLength = param.index + 1
+      }
+    })
+    const params = new Array(paramsLength)
+    actionParams.forEach(paramMetadata => {
+      let param
+      if (req.body && req.body[paramMetadata.name]) {
+        param = req.body[paramMetadata.name]
+      } else if (req.query && req.query[paramMetadata.name]) {
+        param = req.query[paramMetadata.name]
+      }
+      params[paramMetadata.index] = param
+    })
+    return params
   }
 }

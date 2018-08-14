@@ -3,6 +3,7 @@ export declare class ActionParamMetadata {
     name: string;
     type: string;
     index: number;
-    constructor(key: string, name: string, type: string, index: number);
+    acceptHeader: boolean;
+    constructor(key: string, name: string, type: string, index: number, acceptHeader?: boolean);
 }
 //# sourceMappingURL=actionParamMetadata.d.ts.map

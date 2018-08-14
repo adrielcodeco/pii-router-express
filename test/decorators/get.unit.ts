@@ -23,14 +23,14 @@ describe('use Get without arguments', () => {
   test('without Param', () => {
     expect.assertions(1)
     const Get = requireTest().Get
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Get()
       getMethod () {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'getMethod',
@@ -46,20 +46,28 @@ describe('use Get without arguments', () => {
     expect.assertions(1)
     const Get = requireTest().Get
     const Param = require('../../src/decorators/param').Param
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Get()
       getMethod (@Param() paramTest: number) {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'getMethod',
         key: 'getMethod',
         method: 'get',
-        params: [{ index: 0, key: 'getMethod', name: 'paramTest', type: 'Number' }],
+        params: [
+          {
+            acceptHeader: false,
+            index: 0,
+            key: 'getMethod',
+            name: 'paramTest',
+            type: 'Number'
+          }
+        ],
         route: '/'
       }
     ])
@@ -70,14 +78,14 @@ describe('use Get', () => {
   test('without param', () => {
     expect.assertions(1)
     const Get = requireTest().Get
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Get('/path-test', 'name-test')
       getMethod () {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'name-test',
@@ -93,20 +101,28 @@ describe('use Get', () => {
     expect.assertions(1)
     const Get = requireTest().Get
     const Param = require('../../src/decorators/param').Param
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Get('/path-test', 'name-test')
       getMethod (@Param() paramTest: any) {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'name-test',
         key: 'getMethod',
         method: 'get',
-        params: [{ index: 0, key: 'getMethod', name: 'paramTest', type: 'Object' }],
+        params: [
+          {
+            acceptHeader: false,
+            index: 0,
+            key: 'getMethod',
+            name: 'paramTest',
+            type: 'Object'
+          }
+        ],
         route: '/path-test'
       }
     ])

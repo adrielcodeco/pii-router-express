@@ -9,6 +9,7 @@ export class ActionParamMetadata {
     public key: string,
     public name: string,
     public type: string,
-    public index: number
+    public index: number,
+    public acceptHeader: boolean = false
   ) {}
 }

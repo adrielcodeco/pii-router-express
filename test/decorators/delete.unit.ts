@@ -23,14 +23,14 @@ describe('use Delete without arguments', () => {
   test('without Param', () => {
     expect.assertions(1)
     const Delete = requireTest().Delete
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Delete()
       deleteMethod () {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'deleteMethod',
@@ -46,21 +46,27 @@ describe('use Delete without arguments', () => {
     expect.assertions(1)
     const Delete = requireTest().Delete
     const Param = require('../../src/decorators/param').Param
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Delete()
       deleteMethod (@Param() paramTest: number) {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'deleteMethod',
         key: 'deleteMethod',
         method: 'delete',
         params: [
-          { index: 0, key: 'deleteMethod', name: 'paramTest', type: 'Number' }
+          {
+            acceptHeader: false,
+            index: 0,
+            key: 'deleteMethod',
+            name: 'paramTest',
+            type: 'Number'
+          }
         ],
         route: '/'
       }
@@ -72,14 +78,14 @@ describe('use Delete', () => {
   test('without param', () => {
     expect.assertions(1)
     const Delete = requireTest().Delete
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Delete('/path-test', 'name-test')
       deleteMethod () {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'name-test',
@@ -95,21 +101,27 @@ describe('use Delete', () => {
     expect.assertions(1)
     const Delete = requireTest().Delete
     const Param = require('../../src/decorators/param').Param
-    const { Metadata } = require('../../src/metadata')
+    const { MetadataKeys } = require('../../src/metadata')
     class Test {
       @Delete('/path-test', 'name-test')
       deleteMethod (@Param() paramTest: any) {
         // does nothing
       }
     }
-    const action = Reflect.getMetadata(Metadata.controller_actions, Test)
+    const action = Reflect.getMetadata(MetadataKeys.controller_actions, Test)
     expect(action).toEqual([
       {
         action: 'name-test',
         key: 'deleteMethod',
         method: 'delete',
         params: [
-          { index: 0, key: 'deleteMethod', name: 'paramTest', type: 'Object' }
+          {
+            acceptHeader: false,
+            index: 0,
+            key: 'deleteMethod',
+            name: 'paramTest',
+            type: 'Object'
+          }
         ],
         route: '/path-test'
       }

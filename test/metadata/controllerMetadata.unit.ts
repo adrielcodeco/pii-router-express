@@ -144,7 +144,7 @@ test('call getActions', () => {
   })
 })
 
-test('call requestHandler', () => {
+test('call requestHandler', async () => {
   expect.assertions(2)
   const unit = requireTest()
   const { Controller } = require('../../src/decorators/controller')
@@ -165,14 +165,14 @@ test('call requestHandler', () => {
     route: '/'
   })
   const jsonFn = jest.fn()
-  expect(() => {
+  await expect(
     action({}, { json: jsonFn }, () => ({}))
-  }).not.toThrow()
+  ).resolves.toBeUndefined()
   expect(jsonFn).toBeCalled()
 })
 
 describe('call requestHandler using this.controllerResolver', () => {
-  test('for module.exports', () => {
+  test('for module.exports', async () => {
     expect.assertions(2)
     const unit = requireTest()
     const TestController = require('../dummy/classController')
@@ -186,13 +186,13 @@ describe('call requestHandler using this.controllerResolver', () => {
       route: '/'
     })
     const jsonFn = jest.fn()
-    expect(() => {
+    await expect(
       action({}, { json: jsonFn }, () => ({}))
-    }).not.toThrow()
+    ).resolves.toBeUndefined()
     expect(jsonFn).toBeCalled()
   })
 
-  test('for export', () => {
+  test('for export', async () => {
     expect.assertions(2)
     const unit = requireTest()
     const TestController = require('../dummy/exportClassController')
@@ -207,13 +207,13 @@ describe('call requestHandler using this.controllerResolver', () => {
       route: '/'
     })
     const jsonFn = jest.fn()
-    expect(() => {
+    await expect(
       action({}, { json: jsonFn }, () => ({}))
-    }).not.toThrow()
+    ).resolves.toBeUndefined()
     expect(jsonFn).toBeCalled()
   })
 
-  test('for export default', () => {
+  test('for export default', async () => {
     expect.assertions(2)
     const unit = requireTest()
     const TestController = require('../dummy/defaultClassController').default
@@ -227,13 +227,13 @@ describe('call requestHandler using this.controllerResolver', () => {
       route: '/'
     })
     const jsonFn = jest.fn()
-    expect(() => {
+    await expect(
       action({}, { json: jsonFn }, () => ({}))
-    }).not.toThrow()
+    ).resolves.toBeUndefined()
     expect(jsonFn).toBeCalled()
   })
 
-  test('for export default {}', () => {
+  test('for export default {}', async () => {
     expect.assertions(2)
     const unit = requireTest()
     const TestController = require('../dummy/exportObjectContainingClassController')
@@ -250,9 +250,9 @@ describe('call requestHandler using this.controllerResolver', () => {
       route: '/'
     })
     const jsonFn = jest.fn()
-    expect(() => {
+    await expect(
       action({}, { json: jsonFn }, () => ({}))
-    }).not.toThrow()
+    ).resolves.toBeUndefined()
     expect(jsonFn).toBeCalled()
   })
 })

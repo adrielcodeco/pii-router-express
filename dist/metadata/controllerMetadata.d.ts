@@ -10,5 +10,6 @@ export declare class ControllerMetadata {
     use(router: express.Router): void;
     private getActions;
     private requestHandler;
+    private resolveParams;
 }
 //# sourceMappingURL=controllerMetadata.d.ts.map

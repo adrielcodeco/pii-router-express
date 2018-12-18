@@ -36,6 +36,7 @@ describe('use Delete without arguments', () => {
         action: 'deleteMethod',
         key: 'deleteMethod',
         method: 'delete',
+        middlewares: [],
         params: [],
         route: '/'
       }
@@ -59,11 +60,12 @@ describe('use Delete without arguments', () => {
         action: 'deleteMethod',
         key: 'deleteMethod',
         method: 'delete',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'deleteMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Number'
           }
@@ -91,6 +93,7 @@ describe('use Delete', () => {
         action: 'name-test',
         key: 'deleteMethod',
         method: 'delete',
+        middlewares: [],
         params: [],
         route: '/path-test'
       }
@@ -114,11 +117,12 @@ describe('use Delete', () => {
         action: 'name-test',
         key: 'deleteMethod',
         method: 'delete',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'deleteMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Object'
           }

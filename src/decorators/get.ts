@@ -10,6 +10,7 @@ import { ActionMetadata } from '../metadata/actionMetadata'
 export type GetDecoratorOptions = {
   name?: string
   render?: string
+  useCSRF?: boolean
 }
 
 // tslint:disable unified-signatures
@@ -54,8 +55,13 @@ export function Get (
       action.action = name || propertyName
       action.method = method
       action.route = actionPath || '/'
-      if (actionOptions && actionOptions.render) {
-        action.render = actionOptions.render
+      if (actionOptions) {
+        if (actionOptions.render) {
+          action.render = actionOptions.render
+        }
+        if (actionOptions.useCSRF) {
+          action.useCSRF = actionOptions.useCSRF
+        }
       }
     } else {
       action = new ActionMetadata(
@@ -64,8 +70,13 @@ export function Get (
         name || propertyName,
         method
       )
-      if (actionOptions && actionOptions.render) {
-        action.render = actionOptions.render
+      if (actionOptions) {
+        if (actionOptions.render) {
+          action.render = actionOptions.render
+        }
+        if (actionOptions.useCSRF) {
+          action.useCSRF = actionOptions.useCSRF
+        }
       }
       actions.push(action)
     }

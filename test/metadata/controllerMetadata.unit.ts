@@ -22,10 +22,8 @@ beforeAll(() => {
   })
   jest.mock('@pii/scope', () => {
     return {
-      default: {
-        New: (path: any) => {
-          return require(path)
-        }
+      New: (path: any) => {
+        return require(path)
       }
     }
   })
@@ -139,6 +137,7 @@ test('call getActions', () => {
     action: 'getMthod',
     key: 'getMthod',
     method: 'get',
+    middlewares: [],
     params: [],
     route: '/'
   })
@@ -162,6 +161,7 @@ test('call requestHandler', async () => {
     key: 'getMthod',
     method: 'get',
     params: [],
+    middlewares: [],
     route: '/'
   })
   const jsonFn = jest.fn()
@@ -183,6 +183,7 @@ describe('call requestHandler using this.controllerResolver', () => {
       key: 'Home',
       method: 'get',
       params: [],
+      middlewares: [],
       route: '/'
     })
     const jsonFn = jest.fn()
@@ -204,6 +205,7 @@ describe('call requestHandler using this.controllerResolver', () => {
       key: 'Home',
       method: 'get',
       params: [],
+      middlewares: [],
       route: '/'
     })
     const jsonFn = jest.fn()
@@ -224,6 +226,7 @@ describe('call requestHandler using this.controllerResolver', () => {
       key: 'Home',
       method: 'get',
       params: [],
+      middlewares: [],
       route: '/'
     })
     const jsonFn = jest.fn()
@@ -247,6 +250,7 @@ describe('call requestHandler using this.controllerResolver', () => {
       key: 'Home',
       method: 'get',
       params: [],
+      middlewares: [],
       route: '/'
     })
     const jsonFn = jest.fn()

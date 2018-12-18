@@ -1,6 +1,7 @@
 export declare type GetDecoratorOptions = {
     name?: string;
     render?: string;
+    useCSRF?: boolean;
 };
 export declare function Get(): Function;
 export declare function Get(path: string): Function;

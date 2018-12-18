@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as express from 'express'
+import express from 'express'
 import { isFunction } from '@pii/utils'
 
 export type ResponseFormatter = ((req: express.Request, result: any, error: any) => any)

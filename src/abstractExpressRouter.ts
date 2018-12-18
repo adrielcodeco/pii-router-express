@@ -6,10 +6,10 @@
  */
 
 import 'reflect-metadata'
-import * as express from 'express'
-import * as path from 'path'
-import * as fs from 'fs'
-import * as glob from 'glob'
+import express from 'express'
+import path from 'path'
+import fs from 'fs'
+import glob from 'glob'
 import { ExpressRouter } from '@pii/server-express'
 import { Container } from '@pii/di'
 import { resolvePath } from '@pii/moduleloader'

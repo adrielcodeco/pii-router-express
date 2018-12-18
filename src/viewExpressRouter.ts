@@ -6,13 +6,24 @@
  */
 
 import 'reflect-metadata'
+import express from 'express'
 import { ResponseFormatter } from './responseFormatter'
 import { AbstractExpressRouter } from './abstractExpressRouter'
 
 export class ViewExpressRouter extends AbstractExpressRouter {
-  public responseFormatters: ResponseFormatter[] = []
+  public responseFormatters: ResponseFormatter[] = [this.apiResponseFormat]
 
   constructor (public path: string = '/') {
     super(path)
+  }
+
+  private apiResponseFormat (req: express.Request, result: any, error?: any): any {
+    if (error instanceof Error) {
+      error = {
+        message: error.message,
+        stack: error.stack
+      }
+    }
+    return error ? error : result
   }
 }

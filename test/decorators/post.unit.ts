@@ -36,6 +36,7 @@ describe('use Post without arguments', () => {
         action: 'postMethod',
         key: 'postMethod',
         method: 'post',
+        middlewares: [],
         params: [],
         route: '/'
       }
@@ -59,11 +60,12 @@ describe('use Post without arguments', () => {
         action: 'postMethod',
         key: 'postMethod',
         method: 'post',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'postMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Number'
           }
@@ -91,6 +93,7 @@ describe('use Post', () => {
         action: 'name-test',
         key: 'postMethod',
         method: 'post',
+        middlewares: [],
         params: [],
         route: '/path-test'
       }
@@ -114,11 +117,12 @@ describe('use Post', () => {
         action: 'name-test',
         key: 'postMethod',
         method: 'post',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'postMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Object'
           }

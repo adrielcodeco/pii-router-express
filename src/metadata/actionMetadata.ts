@@ -8,12 +8,17 @@ import { Methods } from '../methods'
 import { ActionParamMetadata } from './actionParamMetadata'
 
 export class ActionMetadata {
-  public params: ActionParamMetadata[] = []
   public render?: string
+  public useCSRF?: boolean
+  public params: ActionParamMetadata[]
+  public middlewares: Function[]
   constructor (
     public key: string,
     public route: string,
     public action: string,
     public method: Methods
-  ) {}
+  ) {
+    this.params = []
+    this.middlewares = []
+  }
 }

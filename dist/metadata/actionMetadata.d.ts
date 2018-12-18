@@ -5,8 +5,10 @@ export declare class ActionMetadata {
     route: string;
     action: string;
     method: Methods;
-    params: ActionParamMetadata[];
     render?: string;
+    useCSRF?: boolean;
+    params: ActionParamMetadata[];
+    middlewares: Function[];
     constructor(key: string, route: string, action: string, method: Methods);
 }
 //# sourceMappingURL=actionMetadata.d.ts.map

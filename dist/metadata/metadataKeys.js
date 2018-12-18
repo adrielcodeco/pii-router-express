@@ -1,20 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-class MetadataKeys {
-    static get controller_path() {
-        return 'pii-router-express:controller:path';
+var MetadataKeys = (function () {
+    function MetadataKeys() {
     }
-    static get controller_name() {
-        return 'pii-router-express:controller:name';
-    }
-    static get controller_actions() {
-        return 'pii-router-express:controller:actions';
-    }
-    static get action_render() {
-        return 'pii-router-express:action:render';
-    }
-}
+    Object.defineProperty(MetadataKeys, "controller_path", {
+        get: function () {
+            return 'pii-router-express:controller:path';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MetadataKeys, "controller_name", {
+        get: function () {
+            return 'pii-router-express:controller:name';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MetadataKeys, "controller_actions", {
+        get: function () {
+            return 'pii-router-express:controller:actions';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MetadataKeys, "action_render", {
+        get: function () {
+            return 'pii-router-express:action:render';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return MetadataKeys;
+}());
 exports.MetadataKeys = MetadataKeys;
 
 //# sourceMappingURL=metadataKeys.js.map

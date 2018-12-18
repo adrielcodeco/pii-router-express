@@ -5,18 +5,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as glob from 'glob'
-import * as path from 'path'
-import * as fs from 'fs'
+import glob from 'glob'
+import path from 'path'
+import fs from 'fs'
 import { ExpressRouterToken } from '@pii/server-express'
 import { Container } from '@pii/di'
 import { RESTExpressRouter } from './restExpressRouter'
 import { ViewExpressRouter } from './viewExpressRouter'
+import * as status from './rest/status'
 
 export * from './decorators'
 export * from './controllerResolver'
 export * from './restExpressRouter'
 export * from './viewExpressRouter'
+export * from './rest/next'
+export * from './rest/redirect'
+export * from './rest/sendFile'
+export * from './actionMiddleware'
+
+export {
+  status
+}
 
 export function defaultRestRouterFrom (controllersDir: string) {
   if (!controllersDir) {

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const di_1 = require("@pii/di");
-const controllerToken_1 = require("../controllerToken");
-const metadata_1 = require("../metadata");
+var di_1 = require("@pii/di");
+var controllerToken_1 = require("../controllerToken");
+var metadata_1 = require("../metadata");
 function Controller(path, options) {
-    let name;
+    var name;
     if (typeof options === 'string') {
         name = options;
     }
@@ -20,7 +20,7 @@ function Controller(path, options) {
         Reflect.defineMetadata(metadata_1.MetadataKeys.controller_path, path || '/', target);
         if (typeof options === 'object') {
             if (options.inject) {
-                const meta = metadata_1.Metadata.get(target);
+                var meta = metadata_1.Metadata.get(target);
                 if (options.scoped) {
                     meta.resolveWith(options.scoped);
                 }

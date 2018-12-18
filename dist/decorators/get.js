@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const metadata_1 = require("../metadata");
-const actionMetadata_1 = require("../metadata/actionMetadata");
+var metadata_1 = require("../metadata");
+var actionMetadata_1 = require("../metadata/actionMetadata");
 function Get(pathOrOptions, nameOrOptions) {
-    let actionPath = '/';
-    let actionOptions;
+    var actionPath = '/';
+    var actionOptions;
     if (typeof pathOrOptions === 'object') {
         actionOptions = pathOrOptions;
     }
     else if (pathOrOptions) {
         actionPath = pathOrOptions;
     }
-    let name;
+    var name;
     if (typeof nameOrOptions === 'string') {
         name = nameOrOptions;
     }
@@ -20,22 +20,32 @@ function Get(pathOrOptions, nameOrOptions) {
         actionOptions = nameOrOptions;
     }
     return function (target, propertyName, descriptor) {
-        const method = 'get';
-        const key = propertyName;
-        const actions = Reflect.getMetadata(metadata_1.MetadataKeys.controller_actions, target.constructor) || [];
-        let action = actions.find(a => a.key === key);
+        var method = 'get';
+        var key = propertyName;
+        var actions = Reflect.getMetadata(metadata_1.MetadataKeys.controller_actions, target.constructor) || [];
+        var action = actions.find(function (a) { return a.key === key; });
         if (action) {
             action.action = name || propertyName;
             action.method = method;
             action.route = actionPath || '/';
-            if (actionOptions && actionOptions.render) {
-                action.render = actionOptions.render;
+            if (actionOptions) {
+                if (actionOptions.render) {
+                    action.render = actionOptions.render;
+                }
+                if (actionOptions.useCSRF) {
+                    action.useCSRF = actionOptions.useCSRF;
+                }
             }
         }
         else {
             action = new actionMetadata_1.ActionMetadata(key, actionPath || '/', name || propertyName, method);
-            if (actionOptions && actionOptions.render) {
-                action.render = actionOptions.render;
+            if (actionOptions) {
+                if (actionOptions.render) {
+                    action.render = actionOptions.render;
+                }
+                if (actionOptions.useCSRF) {
+                    action.useCSRF = actionOptions.useCSRF;
+                }
             }
             actions.push(action);
         }

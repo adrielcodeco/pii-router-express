@@ -36,6 +36,7 @@ describe('use Put without arguments', () => {
         action: 'putMethod',
         key: 'putMethod',
         method: 'put',
+        middlewares: [],
         params: [],
         route: '/'
       }
@@ -59,11 +60,12 @@ describe('use Put without arguments', () => {
         action: 'putMethod',
         key: 'putMethod',
         method: 'put',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'putMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Number'
           }
@@ -91,6 +93,7 @@ describe('use Put', () => {
         action: 'name-test',
         key: 'putMethod',
         method: 'put',
+        middlewares: [],
         params: [],
         route: '/path-test'
       }
@@ -114,11 +117,12 @@ describe('use Put', () => {
         action: 'name-test',
         key: 'putMethod',
         method: 'put',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'putMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Object'
           }

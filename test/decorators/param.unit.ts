@@ -36,18 +36,19 @@ test('use Param without arguments', () => {
       action: 'goHome',
       key: 'getMethod',
       method: 'get',
+      middlewares: [],
       params: [
         {
           acceptHeader: false,
           index: 1,
-          key: 'getMethod',
+          key: 'param2Test',
           name: 'param2Test',
           type: 'String'
         },
         {
           acceptHeader: false,
           index: 0,
-          key: 'getMethod',
+          key: 'param1Test',
           name: 'param1Test',
           type: 'Number'
         }
@@ -77,6 +78,7 @@ test('use Param', () => {
       action: 'goHome',
       key: 'getMethod',
       method: 'get',
+      middlewares: [],
       params: [
         {
           acceptHeader: false,

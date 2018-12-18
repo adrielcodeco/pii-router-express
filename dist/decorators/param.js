@@ -1,23 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const metadata_1 = require("../metadata");
-const actionMetadata_1 = require("../metadata/actionMetadata");
-const actionParamMetadata_1 = require("../metadata/actionParamMetadata");
-const utils_1 = require("@pii/utils");
-function Param(name, acceptHeader = false) {
+var metadata_1 = require("../metadata");
+var actionMetadata_1 = require("../metadata/actionMetadata");
+var actionParamMetadata_1 = require("../metadata/actionParamMetadata");
+var utils_1 = require("@pii/utils");
+function Param(nameOrOptions, options) {
+    var name;
+    if (typeof nameOrOptions === 'string') {
+        name = nameOrOptions;
+    }
+    else if (typeof nameOrOptions === 'object' && !options) {
+        options = nameOrOptions;
+    }
     return function (target, propertyName, index) {
-        const key = propertyName;
-        const actions = Reflect.getMetadata(metadata_1.MetadataKeys.controller_actions, target.constructor) || [];
-        let action = actions.find(a => a.key === key);
+        var key = propertyName;
+        var actions = Reflect.getMetadata(metadata_1.MetadataKeys.controller_actions, target.constructor) || [];
+        var action = actions.find(function (a) { return a.key === key; });
         if (!action) {
             action = new actionMetadata_1.ActionMetadata(key, '', '', 'get');
             actions.push(action);
         }
-        const paramName = utils_1.functionArgs(target[propertyName])[index];
-        const paramTypes = Reflect.getMetadata('design:paramtypes', target, propertyName);
-        const paramTypeName = paramTypes[index].name;
-        action.params.push(new actionParamMetadata_1.ActionParamMetadata(name || propertyName, paramName, paramTypeName, index, acceptHeader));
+        var paramName = utils_1.functionArgs(target[propertyName])[index];
+        var paramTypes = Reflect.getMetadata('design:paramtypes', target, propertyName);
+        var paramTypeName = paramTypes[index].name;
+        var actionParam = new actionParamMetadata_1.ActionParamMetadata(name || paramName, paramName, paramTypeName, index);
+        if (options) {
+            actionParam.acceptHeader = !!options.acceptHeader;
+            actionParam.required = options.required;
+            actionParam.validation = options.validation;
+        }
+        action.params.push(actionParam);
         Reflect.defineMetadata(metadata_1.MetadataKeys.controller_actions, actions, target.constructor);
     };
 }

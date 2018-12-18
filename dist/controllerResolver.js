@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ControllerResolver {
-    constructor(controllerFilePath) {
+var ControllerResolver = (function () {
+    function ControllerResolver(controllerFilePath) {
         this.controllerFilePath = controllerFilePath;
     }
-    require(className) {
+    ControllerResolver.prototype.require = function (className) {
         if (!this.controllerFilePath) {
             throw new Error('controllerFilePath cannot be null');
         }
-        const module = require(this.controllerFilePath);
+        var module = require(this.controllerFilePath);
         return module[className];
-    }
-}
+    };
+    return ControllerResolver;
+}());
 exports.ControllerResolver = ControllerResolver;
 
 //# sourceMappingURL=controllerResolver.js.map

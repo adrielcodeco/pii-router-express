@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import * as express from 'express';
+import express from 'express';
 import { ControllerResolver } from '../controllerResolver';
 export declare class ControllerMetadata {
     path: string;

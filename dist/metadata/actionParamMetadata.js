@@ -1,14 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ActionParamMetadata {
-    constructor(key, name, type, index, acceptHeader = false) {
+var ActionParamMetadata = (function () {
+    function ActionParamMetadata(key, name, type, index) {
         this.key = key;
         this.name = name;
         this.type = type;
         this.index = index;
-        this.acceptHeader = acceptHeader;
+        this.acceptHeader = false;
     }
-}
+    return ActionParamMetadata;
+}());
 exports.ActionParamMetadata = ActionParamMetadata;
 
 //# sourceMappingURL=actionParamMetadata.js.map

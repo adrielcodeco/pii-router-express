@@ -7,7 +7,37 @@
 import { MetadataKeys } from '../metadata'
 import { ActionMetadata } from '../metadata/actionMetadata'
 
-export function Post (path?: string, name?: string) {
+export type PostDecoratorOptions = {
+  name?: string;
+  render?: string;
+  useCSRF?: boolean;
+}
+
+// tslint:disable unified-signatures
+export function Post (): Function
+export function Post (path: string): Function
+export function Post (options: PostDecoratorOptions): Function
+export function Post (path: string, name: string): Function
+export function Post (path: string, options: PostDecoratorOptions): Function
+// tslint:enable unified-signatures
+export function Post (
+  pathOrOptions?: string | PostDecoratorOptions,
+  nameOrOptions?: string | PostDecoratorOptions
+) {
+  let actionPath: string = '/'
+  let actionOptions: PostDecoratorOptions
+  if (typeof pathOrOptions === 'object') {
+    actionOptions = pathOrOptions
+  } else if (pathOrOptions) {
+    actionPath = pathOrOptions
+  }
+  let name: string
+  if (typeof nameOrOptions === 'string') {
+    name = nameOrOptions
+  } else if (nameOrOptions) {
+    name = nameOrOptions.name || ''
+    actionOptions = nameOrOptions
+  }
   return function (
     target: any,
     propertyName: string,
@@ -16,19 +46,38 @@ export function Post (path?: string, name?: string) {
     const method = 'post'
     const key = propertyName
     const actions: ActionMetadata[] =
-      Reflect.getMetadata(MetadataKeys.controller_actions, target.constructor) || []
+      Reflect.getMetadata(
+        MetadataKeys.controller_actions,
+        target.constructor
+      ) || []
     let action = actions.find(a => a.key === key)
     if (action) {
       action.action = name || propertyName
       action.method = method
-      action.route = path || '/'
+      action.route = actionPath || '/'
+      if (actionOptions) {
+        if (actionOptions.render) {
+          action.render = actionOptions.render
+        }
+        if (actionOptions.useCSRF) {
+          action.useCSRF = actionOptions.useCSRF
+        }
+      }
     } else {
       action = new ActionMetadata(
         key,
-        path || '/',
+        actionPath || '/',
         name || propertyName,
         method
       )
+      if (actionOptions) {
+        if (actionOptions.render) {
+          action.render = actionOptions.render
+        }
+        if (actionOptions.useCSRF) {
+          action.useCSRF = actionOptions.useCSRF
+        }
+      }
       actions.push(action)
     }
     Reflect.defineMetadata(

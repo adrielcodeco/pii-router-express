@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@pii/di");
-const application_1 = require("@pii/application");
-const metadata_1 = require("./metadata");
+var di_1 = require("@pii/di");
+var application_1 = require("@pii/application");
+var metadata_1 = require("./metadata");
 function RequestExtension(req, res, next) {
     res.redirectTo = function (controller) {
-        const controllerPath = Reflect.getMetadata(metadata_1.MetadataKeys.controller_path, controller);
+        var controllerPath = Reflect.getMetadata(metadata_1.MetadataKeys.controller_path, controller);
         req.redirect(controllerPath);
     };
     next();

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import * as express from 'express';
+import express from 'express';
 import { ExpressRouter } from '@pii/server-express';
 import { ResponseFormatter } from './responseFormatter';
 export declare abstract class AbstractExpressRouter extends ExpressRouter {

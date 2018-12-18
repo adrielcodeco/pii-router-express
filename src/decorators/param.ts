@@ -5,12 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  */
 import 'reflect-metadata'
+import express from 'express'
 import { MetadataKeys } from '../metadata'
 import { ActionMetadata } from '../metadata/actionMetadata'
 import { ActionParamMetadata } from '../metadata/actionParamMetadata'
 import { functionArgs } from '@pii/utils'
 
-export function Param (name?: string, acceptHeader: boolean = false) {
+export type ParamOptions = {
+  acceptHeader?: boolean;
+  required?: boolean;
+  validation?: (value: any, req: express.Request) => string;
+}
+
+// tslint:disable unified-signatures
+export function Param (): Function
+export function Param (name: string): Function
+export function Param (options: ParamOptions): Function
+// tslint:enable unified-signatures
+export function Param (
+  nameOrOptions?: string | ParamOptions,
+  options?: ParamOptions
+): Function {
+  let name: string
+  if (typeof nameOrOptions === 'string') {
+    name = nameOrOptions
+  } else if (typeof nameOrOptions === 'object' && !options) {
+    options = nameOrOptions
+  }
   return function (target: any, propertyName: string, index: number) {
     const key = propertyName
     const actions: ActionMetadata[] =
@@ -30,15 +51,18 @@ export function Param (name?: string, acceptHeader: boolean = false) {
       propertyName
     )
     const paramTypeName = paramTypes[index].name
-    action.params.push(
-      new ActionParamMetadata(
-        name || propertyName,
-        paramName,
-        paramTypeName,
-        index,
-        acceptHeader
-      )
+    const actionParam = new ActionParamMetadata(
+      name || paramName,
+      paramName,
+      paramTypeName,
+      index
     )
+    if (options) {
+      actionParam.acceptHeader = !!options.acceptHeader
+      actionParam.required = options.required
+      actionParam.validation = options.validation
+    }
+    action.params.push(actionParam)
     Reflect.defineMetadata(
       MetadataKeys.controller_actions,
       actions,

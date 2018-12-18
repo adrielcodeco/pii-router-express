@@ -11,7 +11,7 @@ const requireTest = () => {
 }
 
 test('require', () => {
-  expect.assertions(12)
+  expect.assertions(20)
   const unit = requireTest()
   expect(unit).toHaveProperty('Controller')
   expect(unit).toHaveProperty('ControllerResolver')
@@ -22,7 +22,15 @@ test('require', () => {
   expect(unit).toHaveProperty('Put')
   expect(unit).toHaveProperty('RESTExpressRouter')
   expect(unit).toHaveProperty('ViewExpressRouter')
+  expect(unit).toHaveProperty('Next')
+  expect(unit).toHaveProperty('next')
+  expect(unit).toHaveProperty('Redirect')
+  expect(unit).toHaveProperty('redirect')
+  expect(unit).toHaveProperty('SendFile')
+  expect(unit).toHaveProperty('sendFile')
+  expect(unit).toHaveProperty('status')
+  expect(unit).toHaveProperty('ActionMiddleware')
   expect(unit).toHaveProperty('defaultRestRouterFrom')
   expect(unit).toHaveProperty('defaultViewRouterFrom')
-  expect(Object.keys(unit).length).toEqual(11)
+  expect(Object.keys(unit).length).toEqual(19)
 })

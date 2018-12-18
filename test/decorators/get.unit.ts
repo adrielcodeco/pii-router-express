@@ -36,6 +36,7 @@ describe('use Get without arguments', () => {
         action: 'getMethod',
         key: 'getMethod',
         method: 'get',
+        middlewares: [],
         params: [],
         route: '/'
       }
@@ -59,11 +60,12 @@ describe('use Get without arguments', () => {
         action: 'getMethod',
         key: 'getMethod',
         method: 'get',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'getMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Number'
           }
@@ -91,6 +93,7 @@ describe('use Get', () => {
         action: 'name-test',
         key: 'getMethod',
         method: 'get',
+        middlewares: [],
         params: [],
         route: '/path-test'
       }
@@ -114,11 +117,12 @@ describe('use Get', () => {
         action: 'name-test',
         key: 'getMethod',
         method: 'get',
+        middlewares: [],
         params: [
           {
             acceptHeader: false,
             index: 0,
-            key: 'getMethod',
+            key: 'paramTest',
             name: 'paramTest',
             type: 'Object'
           }
